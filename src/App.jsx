@@ -2,9 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 import DefaultLayout from '../layouts/DefaultLayout'
 import Header from '../components/Header'
-import HomePage from '../components/pages/HomePage'
-import BooksPage from '../components/pages/BooksPages'
-import BookPage from '../components/pages/BookPage'
+import HomePage from '../pages/HomePage'
+import BooksPage from '../pages/BooksPage'
+import BookPage from '../pages/BookPage'
 function App() {
  
   return (

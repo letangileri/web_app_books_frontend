@@ -1,19 +1,39 @@
+import axios from "axios";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"
 
+ const API_URL = 'http://localhost:3000/api/books';
+
+
 export default function BookPage(){
+
     const { id } = useParams();
+    const [book, setBook] = useState({});
+    useEffect(()=>{
+        axios.get(`${API_URL}/${id}`)
+        .then(res => {
+            console.log(res.data)
+            setBook(res.data);
+        })
+        .catch(err => {
+            console.log(err)
+        }
+        )
+    },[])
+
+
     return(
         <>
         <div class="p-5">
             <div class="container-fluid py-5 d-flex gap-4">
                 <div className="cover col-12 col-sm-5 col-md-4">
-                    <img className="img-fluid" src="https://placehold.co/600x400?text=Il+nome+della+rosa" alt="Il nome della rosa book" />
+                    <img className="img-fluid" src={book?.cover_image} alt={book?.title} />
                 </div>
                     <div className="details">
                         <h1 class="display-5 fw-bold">Il nome della rosa</h1>
-                        <div className="my-2"><i className="bi bi-person-badge"></i>Author name</div>
+                        <div className="my-2"><i className="bi bi-person-badge"></i>{book?.author}</div>
                         <p class="lead">
-                            Abstract:
+                            {book?.abstract}
                         </p>
                     </div>
             </div>
@@ -60,42 +80,19 @@ export default function BookPage(){
 
         <section id="reviews">
             <div className="container">
-                <div className="card p-3 mb-3 position-relative">
-                    <h4>Giovanni</h4>
-                    <p>Rich, emotional and beatifully written</p>
+                {book.reviews?.map((item)=>(
+                <div className="card p-3 mb-3 position-relative" key={item.id}>
+                    <h4>{item.name}</h4>
+                    <p>{item.review}</p>
+                    <div>vote: {item.vote}</div>
                     <div className="vote text-warning position-absolute top-0 end-0 m-2">
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star"></i>
-
+                        {"★".repeat(item.vote)}
+                        {"☆".repeat(5 - item.vote)}
                     </div>
                 </div>
-                <div className="card p-3 mb-3 position-relative">
-                    <h4>Giovanni</h4>
-                    <p>Rich, emotional and beatifully written</p>
-                    <div className="vote text-warning position-absolute top-0 end-0 m-2">
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star"></i>
+                ))}
 
-                    </div>
-                </div>
-                <div className="card p-3 mb-3 position-relative">
-                    <h4>Giovanni</h4>
-                    <p>Rich, emotional and beatifully written</p>
-                    <div className="vote text-warning position-absolute top-0 end-0 m-2">
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star"></i>
 
-                    </div>
-                </div>
             </div>
         </section>
         </>
