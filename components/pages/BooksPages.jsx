@@ -1,6 +1,26 @@
 import { Link } from "react-router-dom"
+import { useState, useEffect } from "react"
+import axios from "axios"
+
+const API_URL = 'http://localhost:3000/api/books';
 
 export default function BooksPage (){
+
+    const [books, setBooks] = useState([]);
+
+    useEffect(()=>{
+        axios.get(API_URL)
+        .then(res => {
+            console.log(res);
+            console.log(res.data.books);
+            setBooks(res.data.books)
+            
+        })
+        .catch(err => {
+            console.error(err)
+        })
+    },[])
+    
 
     return(
         <>
@@ -15,48 +35,24 @@ export default function BooksPage (){
         <section className="mb-4">
             <div className="container">
                 <div className="row row-cols-1 row-cols-md-3 g-4">
-                    <div className="col">
+                    {books.map((item)=>(
+                    <div className="col" key={item.id}>
                         <div className="card">
-                            <Link to="/books/2">
-                            <img className="card-img-top" src="https://placehold.co/600x400?text=Il+nome+della+rosa" alt="Il nome della rosa book" />
+                            <Link to={`/books/${item.id}`}>
+                            <img className="card-img-top" src={item.cover_image} alt={item.title} />
                             </Link>
                             <div className="card-body">
                                 <h5 className="card-title">
-                                    Il nome della rosa
+                                    {item.title}
                                 </h5>
-                                <div className="my-2"><i className="bi bi-person-badge"></i>Author name</div>
-                                <Link className="btn btn-dark" to="/books/2">View Details</Link>
+                                <div className="my-2"><i className="bi bi-person-badge"></i>{item.author}</div>
+                                <Link className="btn btn-dark" to={`/books/${item.id}`}>View Details</Link>
                             </div>
                         </div>
                     </div>
-                    <div className="col">
-                        <div className="card">
-                            <Link to="/books/3">
-                            <img className="card-img-top" src="https://placehold.co/600x400?text=1984" alt="1984 book" />
-                            </Link>
-                            <div className="card-body">
-                                <h5 className="card-title">
-                                    1984
-                                </h5>
-                                <div className="my-2"><i className="bi bi-person-badge"></i>Author name</div>
-                                <Link className="btn btn-dark" to="/books/3">View Details</Link>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="card">
-                            <Link to="/books/4">
-                            <img className="card-img-top" src="https://placehold.co/600x400?text=Orgoglio+e+pregiudizio" alt="Orgoglio e pregiudizio book" />
-                            </Link>
-                            <div className="card-body">
-                                <h5 className="card-title">
-                                    Orgoglio e pregiudizio
-                                </h5>
-                                <div className="my-2"><i className="bi bi-person-badge"></i>Author name</div>
-                                <Link className="btn btn-dark" to="/books/4">View Details</Link>
-                            </div>
-                        </div>
-                    </div>
+                    ))}
+
+
                 </div>
                 <div className="text-center">
                     <button className="btn btn-dark mt-5">Load More Books</button>
