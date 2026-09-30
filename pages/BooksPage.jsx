@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom"
 import { useState, useEffect } from "react"
 import axios from "axios"
-
+import BookCard from "../components/BookCard";
+import BooksList from "../components/BooksList";
 const API_URL = 'http://localhost:3000/api/books';
 
 export default function BooksPage (){
@@ -32,34 +33,7 @@ export default function BooksPage (){
                 </p>
             </div>
         </div>
-        <section className="mb-4">
-            <div className="container">
-                <div className="row row-cols-1 row-cols-md-3 g-4">
-                    {books.map((item)=>(
-                    <div className="col" key={item.id}>
-                        <div className="card">
-                            <Link to={`/books/${item.id}`}>
-                            <img className="card-img-top" src={item.cover_image} alt={item.title} />
-                            </Link>
-                            <div className="card-body">
-                                <h5 className="card-title">
-                                    {item.title}
-                                </h5>
-                                <div className="my-2"><i className="bi bi-person-badge"></i>{item.author}</div>
-                                <Link className="btn btn-dark" to={`/books/${item.id}`}>View Details</Link>
-                            </div>
-                        </div>
-                    </div>
-                    ))}
-
-
-                </div>
-                <div className="text-center">
-                    <button className="btn btn-dark mt-5">Load More Books</button>
-                </div>
-            </div>
-            
-        </section>
+        <BooksList bookslist={books}/>
         </>
     )
 }
