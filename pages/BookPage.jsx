@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"
-
+import ReviewsList from "../components/ReviewsList";
  const API_URL = 'http://localhost:3000/api/books';
 
 
@@ -78,23 +78,7 @@ export default function BookPage(){
         </section>
 
 
-        <section id="reviews">
-            <div className="container">
-                {book.reviews?.map((item)=>(
-                <div className="card p-3 mb-3 position-relative" key={item.id}>
-                    <h4>{item.name}</h4>
-                    <p>{item.review}</p>
-                    <div>vote: {item.vote}</div>
-                    <div className="vote text-warning position-absolute top-0 end-0 m-2">
-                        {"★".repeat(item.vote)}
-                        {"☆".repeat(5 - item.vote)}
-                    </div>
-                </div>
-                ))}
-
-
-            </div>
-        </section>
+        <ReviewsList bookList={book}/>
         </>
     )
 }
